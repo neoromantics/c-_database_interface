@@ -15,7 +15,6 @@ DatabaseManager::DatabaseManager(const string &conninfo)
 connection *DatabaseManager::getConnection() { return conn.get(); }
 
 void DatabaseManager::setupTables() {
-  // Drop tables in order: PLAYER, TEAM, STATE, COLOR.
   vector<unique_ptr<DBTable>> dropTables;
   dropTables.push_back(make_unique<PlayerTable>());
   dropTables.push_back(make_unique<TeamTable>());
