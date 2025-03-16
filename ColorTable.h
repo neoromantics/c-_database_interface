@@ -1,19 +1,16 @@
+#ifndef COLORTABLE_H
+#define COLORTABLE_H
+
+#include <pqxx/pqxx>
+
 #include "DBTable.h"
+
+using namespace pqxx;
 
 class ColorTable : public DBTable {
  public:
-  void drop(connection *C) const override {
-    work W(*C);
-    W.exec("DROP TABLE IF EXISTS COLOR;");
-    W.commit();
-  }
-  void create(connection *C) const override {
-    work W(*C);
-    W.exec(
-        "CREATE TABLE COLOR("
-        "  COLOR_ID SERIAL PRIMARY KEY, "
-        "  NAME VARCHAR(50)"
-        ");");
-    W.commit();
-  }
+  void drop(connection *C) const override;
+  void create(connection *C) const override;
 };
+
+#endif  // COLORTABLE_H
