@@ -1,35 +1,26 @@
 CC=g++
-CFLAGS=-O3
+CFLAGS=-O3 -Iinclude
 EXTRAFLAGS=-lpqxx -lpq
+SRC_DIR=src
+INCLUDE_DIR=include
+OBJ_DIR=obj
+
+SRCS=$(wildcard $(SRC_DIR)/*.cpp)
+OBJS=$(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
 all: test
 
-test: main.o exerciser.o query_funcs.o DatabaseManager.o ColorTable.o PlayerTable.o StateTable.o
-	$(CC) $(CFLAGS) -o test main.o exerciser.o query_funcs.o DatabaseManager.o ColorTable.o PlayerTable.o StateTable.o $(EXTRAFLAGS)
+test: $(OBJS)
+	$(CC) $(CFLAGS) -o test $(OBJS) $(EXTRAFLAGS)
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) -c main.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-exerciser.o: exerciser.cpp exerciser.h
-	$(CC) $(CFLAGS) -c exerciser.cpp
-
-query_funcs.o: query_funcs.cpp query_funcs.h
-	$(CC) $(CFLAGS) -c query_funcs.cpp
-
-DatabaseManager.o: DatabaseManager.cpp DatabaseManager.h
-	$(CC) $(CFLAGS) -c DatabaseManager.cpp
-
-ColorTable.o: ColorTable.cpp ColorTable.h
-	$(CC) $(CFLAGS) -c ColorTable.cpp
-
-PlayerTable.o: PlayerTable.cpp PlayerTable.h
-	$(CC) $(CFLAGS) -c PlayerTable.cpp
-
-StateTable.o: StateTable.cpp StateTable.h
-	$(CC) $(CFLAGS) -c StateTable.cpp
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -f *~ *.o test
+	rm -rf $(OBJ_DIR) test
 
 clobber:
-	rm -f *~ *.o
+	rm -rf $(OBJ_DIR)
