@@ -13,4 +13,4 @@ class ColorTable : public DBTable {
   void create(connection *C) const override;
 };
 
-#endif  // COLORTABLE_H
+#endif

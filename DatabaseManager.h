@@ -22,12 +22,10 @@ class DatabaseManager {
  private:
   unique_ptr<connection> conn;
 
-  // Templated file parsing method.
   template <typename Creator>
   vector<unique_ptr<DBRecord>> parseFile(const string &filename,
                                          Creator createRecord);
 
-  // Helper to append records from one vector into dest.
   void appendRecords(vector<unique_ptr<DBRecord>> &dest,
                      vector<unique_ptr<DBRecord>> src);
 
@@ -36,14 +34,11 @@ class DatabaseManager {
 
   connection *getConnection();
 
-  // Drop and create tables.
   void setupTables();
 
-  // Load all records from files and insert them.
   void loadAndInsertRecords();
 
-  // Run tests from exerciser.cpp.
   void runTests();
 };
 
-#endif  // DATABASEMANAGER_H
+#endif

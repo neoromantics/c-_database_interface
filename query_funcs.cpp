@@ -12,9 +12,6 @@
 using namespace std;
 using namespace pqxx;
 
-// --------------------------------------------------------------------
-// ADD FUNCTIONS (INSERT) – using work transactions for modifications
-// --------------------------------------------------------------------
 void add_player(connection *C, int team_id, int jersey_num, string first_name,
                 string last_name, int mpg, int ppg, int rpg, int apg,
                 double spg, double bpg) {
@@ -72,28 +69,18 @@ void add_color(connection *C, string name) {
   }
 }
 
-// --------------------------------------------------------------------
-// SELECT helper: run read-only query using nontransaction
-// --------------------------------------------------------------------
 static result run_select_query(connection *C, const string &sql) {
   nontransaction N(*C);
   result R = N.exec(sql);
   return R;
 }
 
-// --------------------------------------------------------------------
-// Query Class Hierarchy
-// --------------------------------------------------------------------
-
-// Base class for all queries
 class Query {
  public:
   virtual ~Query() {}
   virtual void execute(connection *C) const = 0;
 };
 
-// A templated class for simple queries that only need to run a given SQL
-// string, print a header, and then print each row using a provided lambda.
 template <typename RowPrinter>
 class SimpleQuery : public Query {
  private:
@@ -116,7 +103,6 @@ class SimpleQuery : public Query {
   }
 };
 
-// For query1, which has complex filtering, we create a dedicated derived class.
 class Query1 : public Query {
  private:
   int use_mpg, min_mpg, max_mpg;
@@ -201,9 +187,6 @@ class Query1 : public Query {
   }
 };
 
-// --------------------------------------------------------------------
-// Row Printer Lambdas for SimpleQuery usage
-// --------------------------------------------------------------------
 auto printQuery2Row = [](const row &r) { cout << r[0].as<string>() << endl; };
 
 auto printQuery3Row = [](const row &r) {
@@ -220,9 +203,6 @@ auto printQuery5Row = [](const row &r) {
        << r[2].as<string>() << " " << r[3].as<int>() << endl;
 };
 
-// --------------------------------------------------------------------
-// Query Functions using our Query classes
-// --------------------------------------------------------------------
 void query1(connection *C, int use_mpg, int min_mpg, int max_mpg, int use_ppg,
             int min_ppg, int max_ppg, int use_rpg, int min_rpg, int max_rpg,
             int use_apg, int min_apg, int max_apg, int use_spg, double min_spg,

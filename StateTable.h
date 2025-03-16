@@ -13,4 +13,4 @@ class StateTable : public DBTable {
   void create(connection *C) const override;
 };
 
-#endif  // STATETABLE_H
+#endif

@@ -12,4 +12,4 @@ class DBTable {
   virtual void create(connection *C) const = 0;
 };
 
-#endif  // DBTABLE_H
+#endif

@@ -23,7 +23,6 @@ void DatabaseManager::setupTables() {
   dropTables.push_back(make_unique<ColorTable>());
   for (const auto &table : dropTables) table->drop(conn.get());
 
-  // Create tables in order: STATE, COLOR, TEAM, PLAYER.
   vector<unique_ptr<DBTable>> createTables;
   createTables.push_back(make_unique<StateTable>());
   createTables.push_back(make_unique<ColorTable>());
@@ -35,7 +34,6 @@ void DatabaseManager::setupTables() {
 void DatabaseManager::loadAndInsertRecords() {
   vector<unique_ptr<DBRecord>> allRecords;
 
-  // Define lambdas for each file format.
   auto createStateRecord = [](istringstream &iss) -> unique_ptr<DBRecord> {
     int skip;
     string name;
@@ -79,19 +77,16 @@ void DatabaseManager::loadAndInsertRecords() {
                                      bpg);
   };
 
-  // Parse each file.
   appendRecords(allRecords, parseFile("state.txt", createStateRecord));
   appendRecords(allRecords, parseFile("color.txt", createColorRecord));
   appendRecords(allRecords, parseFile("team.txt", createTeamRecord));
   appendRecords(allRecords, parseFile("player.txt", createPlayerRecord));
 
-  // Insert all records polymorphically.
   for (const auto &record : allRecords) record->insertIntoDB(conn.get());
 }
 
 void DatabaseManager::runTests() { exercise(conn.get()); }
 
-// Templated function to parse a file.
 template <typename Creator>
 vector<unique_ptr<DBRecord>> DatabaseManager::parseFile(const string &filename,
                                                         Creator createRecord) {
@@ -111,7 +106,6 @@ vector<unique_ptr<DBRecord>> DatabaseManager::parseFile(const string &filename,
   return records;
 }
 
-// Helper function to append records.
 void DatabaseManager::appendRecords(vector<unique_ptr<DBRecord>> &dest,
                                     vector<unique_ptr<DBRecord>> src) {
   for (auto &rec : src) dest.push_back(move(rec));

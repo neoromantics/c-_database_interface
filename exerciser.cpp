@@ -8,8 +8,6 @@ void exercise(pqxx::connection *C) {
   std::cout
       << "\n===================== EXERCISE() TESTS =====================\n";
 
-  // Query1: show players who have MPG in [35, 40], no constraints for other
-  // stats
   std::cout << "\n--- QUERY1: Players with 35 <= MPG <= 40 ---\n";
   query1(C,
          /*use_mpg=*/1, /*min_mpg=*/35, /*max_mpg=*/40,

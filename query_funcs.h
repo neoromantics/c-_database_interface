@@ -19,11 +19,6 @@ void add_state(connection *C, string name);
 
 void add_color(connection *C, string name);
 
-/*
- * All use_ params are used as flags for corresponding attributes
- * a 1 for a use_ param means this attribute is enabled (i.e. a WHERE clause is
- * needed) a 0 for a use_ param means this attribute is disabled
- */
 void query1(connection *C, int use_mpg, int min_mpg, int max_mpg, int use_ppg,
             int min_ppg, int max_ppg, int use_rpg, int min_rpg, int max_rpg,
             int use_apg, int min_apg, int max_apg, int use_spg, double min_spg,
@@ -37,4 +32,4 @@ void query4(connection *C, string team_state, string team_color);
 
 void query5(connection *C, int num_wins);
 
-#endif  //_QUERY_FUNCS_
+#endif
